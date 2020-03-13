@@ -1,28 +1,15 @@
 #!/usr/bin/env python3
 
-import json
 from flask import Flask, jsonify, request
+import redis
 import time
 
-# Create a new key to use:  POST http://localhost:5000/new/<key>
 # Set the value of the key: POST http://localhost:5000/<key>/<value>
 # Get the value of the key: GET http://localhost:5000/<key>
-# Clear key:                GET http://localhost:5000/clear/<key>
 
 
 app = Flask(__name__)
 rdb = redis.from_url(os.environ.get("REDIS_URL"))
-
-@app.route('/clear/<name>', methods=['GET'])
-def clear(name):
-    rdb.set(name, "")
-    return jsonify({name: ""})
-
-# Create a new key
-@app.route('/new/<name>', methods=['POST'])
-def new_key(name):
-    rdb.set(name, "")
-    return jsonify({name: ""})
 
 # set a value
 @app.route('/<name>/<value>', methods=['POST'])
